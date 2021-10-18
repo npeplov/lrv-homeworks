@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CarsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,24 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// выпуск токенов
+Route::post(
+    '/api/tokens/create',
+    [\App\Http\Controllers\ApiTokenController::class, 'createToken']
+);
+
+// вывод инфо о машине
+//Route::apiResource('cars', CarsController::class)
+//    ->middleware('auth:sanctum');
+
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+//Route::group([], function () {
+    Route::apiResource(
+        'cars',
+        CarsController::class
+    );
+});
+
+
